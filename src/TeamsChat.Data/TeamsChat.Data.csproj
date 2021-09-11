@@ -23,4 +23,8 @@
     <Folder Include="UnitOfWork\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TeamsChat.DataObjects\TeamsChat.DataObjects.csproj" />
+  </ItemGroup>
+
 </Project>
