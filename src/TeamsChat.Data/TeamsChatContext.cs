@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TeamsChat.DataObjects;
 
 namespace TeamsChat.Data
 {
     public class TeamsChatContext : DbContext
     {
+        public TeamsChatContext() { }
         public TeamsChatContext(DbContextOptions<TeamsChatContext> options) : base(options) { }
 
-        //public virtual DbSet<AttachedFiles> AttachedFiles { get; set; }
+        public virtual DbSet<TestData> TestData { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

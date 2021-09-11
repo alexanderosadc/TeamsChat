@@ -67,22 +67,11 @@ namespace TeamsChat.Data.Repository
 
         public void Insert(params TEntity[] entities)
         {
-            foreach (var entity in entities)
-            {
-                entity.CreatedAt = DateTimeOffset.Now;
-                entity.UpdatedAt = DateTimeOffset.Now;
-            }
             _dbSet.AddRange(entities);
         }
 
         public void Insert(IEnumerable<TEntity> entities)
         {
-            foreach (var entity in entities)
-            {
-                entity.CreatedAt = DateTimeOffset.Now;
-                entity.UpdatedAt = DateTimeOffset.Now;
-            }
-
             _dbSet.AddRange(entities);
         }
         #endregion
@@ -90,27 +79,16 @@ namespace TeamsChat.Data.Repository
         #region Update Functions
         public void Update(TEntity entity)
         {
-            entity.UpdatedAt = DateTimeOffset.Now;
             _dbSet.Update(entity);
         }
 
         public void Update(params TEntity[] entities)
         {
-            foreach (var entity in entities)
-            {
-                entity.UpdatedAt = DateTimeOffset.Now;
-            }
-
             _dbSet.UpdateRange(entities);
         }
 
         public void Update(IEnumerable<TEntity> entities)
         {
-            foreach (var entity in entities)
-            {
-                entity.UpdatedAt = DateTimeOffset.Now;
-            }
-
             _dbSet.UpdateRange(entities);
         }
         #endregion

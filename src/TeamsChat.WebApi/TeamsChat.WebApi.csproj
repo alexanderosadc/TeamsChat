@@ -6,16 +6,20 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TeamsChat.Data\TeamsChat.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="DTO\" />
     <Folder Include="Mapper\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\TeamsChat.Data\TeamsChat.Data.csproj" />
   </ItemGroup>
 
 </Project>
