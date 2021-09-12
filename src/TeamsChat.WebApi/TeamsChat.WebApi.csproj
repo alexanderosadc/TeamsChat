@@ -17,8 +17,4 @@
     <ProjectReference Include="..\TeamsChat.Data\TeamsChat.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mapper\" />
-  </ItemGroup>
-
 </Project>

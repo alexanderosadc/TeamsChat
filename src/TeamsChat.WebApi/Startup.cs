@@ -1,21 +1,17 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TeamsChat.Data;
+using TeamsChat.Data.DbInitializer;
 using TeamsChat.Data.Repository;
 using TeamsChat.Data.UnitOfWork;
+using TeamsChat.WebApi.Mapper;
 
 namespace TeamsChat.WebApi
 {
@@ -34,11 +30,16 @@ namespace TeamsChat.WebApi
             services.AddDbContext<TeamsChatContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
+                mc.AddProfile(new AttachedFilesProfile());
+                mc.AddProfile(new MessageGroupsProfile());
+                mc.AddProfile(new MessagesProfile());
+                mc.AddProfile(new UsersProfile());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
@@ -59,6 +60,20 @@ namespace TeamsChat.WebApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TeamsChat.WebApi v1"));
+            }
+
+            try
+            {
+                var scopedFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+                using (var scope = scopedFactory.CreateScope())
+                {
+                    var dbInitializer = scope.ServiceProvider.GetService<IDbInitializer>();
+                    dbInitializer.Initialize();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex);
             }
 
             app.UseHttpsRedirection();
