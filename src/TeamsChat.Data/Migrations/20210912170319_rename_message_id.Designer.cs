@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TeamsChat.Data;
 
 namespace TeamsChat.Data.Migrations
 {
     [DbContext(typeof(TeamsChatContext))]
-    partial class TeamsChatContextModelSnapshot : ModelSnapshot
+    [Migration("20210912170319_rename_message_id")]
+    partial class rename_message_id
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

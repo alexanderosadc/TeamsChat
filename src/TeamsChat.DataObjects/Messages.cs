@@ -6,5 +6,7 @@ namespace TeamsChat.DataObjects
     {
         public string Text { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int MessageGroupsId { get; set; }
+        public MessageGroups MessageGroups { get; set; }
     }
 }
