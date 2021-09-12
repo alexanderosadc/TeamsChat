@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using TeamsChat.Data.SeedFunctions;
 
 namespace TeamsChat.Data.DbInitializer
 {
@@ -8,6 +9,7 @@ namespace TeamsChat.Data.DbInitializer
     {
         private readonly IServiceScopeFactory _scopeFactory;
 
+        private Seed _seed;
         public DbInitializer(IServiceScopeFactory scopeFactory)
         {
             _scopeFactory = scopeFactory;
@@ -23,6 +25,8 @@ namespace TeamsChat.Data.DbInitializer
                     {
                         context.Database.Migrate();
 
+                        _seed = new Seed(context);
+                        _seed.PopulateWithData();
                     }
                     catch (Exception ex)
                     {

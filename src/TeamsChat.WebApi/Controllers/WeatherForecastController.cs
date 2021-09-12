@@ -22,7 +22,7 @@ namespace TeamsChat.WebApi.Controllers
         //    var data = _database.GetRepository<TestData>()
         //        .GetList(selector: td => td);
 
-        //    return data;
-        //}
+            return data;
+        }
     }
 }
