@@ -16,13 +16,13 @@ namespace TeamsChat.WebApi.Controllers
     {
         public WeatherForecastController(IUnitOfWork database, IMapper mapper) : base(database, mapper) { }
 
-        //[HttpGet]
-        //public IEnumerable<TestData> Get()
-        //{
-        //    var data = _database.GetRepository<TestData>()
-        //        .GetList(selector: td => td);
+        [HttpGet]
+        public IEnumerable<Messages> Get()
+        {
+            var data = _database.GetRepository<Messages>()
+                .GetList(selector: td => td);
 
-            //return data;
-        //}
+            return data;
+        }
     }
 }

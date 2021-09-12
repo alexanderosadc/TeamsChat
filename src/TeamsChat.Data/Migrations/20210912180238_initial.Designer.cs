@@ -10,8 +10,8 @@ using TeamsChat.Data;
 namespace TeamsChat.Data.Migrations
 {
     [DbContext(typeof(TeamsChatContext))]
-    [Migration("20210912171055_remove_testData_table")]
-    partial class remove_testData_table
+    [Migration("20210912180238_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,9 +93,14 @@ namespace TeamsChat.Data.Migrations
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MessageGroupsId");
+
+                    b.HasIndex("UsersId");
 
                     b.ToTable("Messages");
                 });
@@ -158,7 +163,15 @@ namespace TeamsChat.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TeamsChat.DataObjects.Users", "Users")
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("MessageGroups");
+
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }
