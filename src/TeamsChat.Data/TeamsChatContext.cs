@@ -8,7 +8,6 @@ namespace TeamsChat.Data
         public TeamsChatContext() { }
         public TeamsChatContext(DbContextOptions<TeamsChatContext> options) : base(options) { }
 
-        public virtual DbSet<TestData> TestData { get; set; }
         public virtual DbSet<AttachedFiles> AttachedFiles { get; set; }
         public virtual DbSet<MessageGroups> MessageGroups { get; set; }
         public virtual DbSet<Messages> Messages { get; set; }
