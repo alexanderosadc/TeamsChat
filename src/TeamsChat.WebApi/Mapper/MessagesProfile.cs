@@ -8,8 +8,8 @@ namespace TeamsChat.WebApi.Mapper
     {
         public MessagesProfile()
         {
-            CreateMap<Messages, MessagesDTO>();
-            CreateMap<MessagesDTO, Messages>();
+            CreateMap<Message, MessagesDTO>();
+            CreateMap<MessagesDTO, Message>();
         }
     }
 }

@@ -8,8 +8,8 @@ namespace TeamsChat.WebApi.Mapper
     {
         public AttachedFilesProfile()
         {
-            CreateMap<AttachedFiles, AttachedFilesDTO>();
-            CreateMap<AttachedFilesDTO, AttachedFiles>();
+            CreateMap<AttachedFile, AttachedFilesDTO>();
+            CreateMap<AttachedFilesDTO, AttachedFile>();
         }
     }
 }

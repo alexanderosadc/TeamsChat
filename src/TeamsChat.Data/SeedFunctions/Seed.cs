@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TeamsChat.DataObjects;
 
 namespace TeamsChat.Data.SeedFunctions
@@ -14,28 +12,106 @@ namespace TeamsChat.Data.SeedFunctions
         {
             _context = context;
         }
-        public void PopulateWithData()
+        public void DevelopmentSeed()
         {
-            _context.Users.Add(new Users {FirstName = "Alex", LastName = "Osa", Email = "osa@klock.com", Password = "as"});
-            _context.Users.Add(new Users { FirstName = "Vova", LastName = "Leadavshci", Email = "vova@ianepiu.com", Password = "12" });
-            _context.Users.Add(new Users { FirstName = "Max", LastName = "Volosenco", Email = "mav@nehojuvuniver.com", Password = "12" });
+            if (_context.AttachedFiles.Any())
+                return;
+
+            var user1 = CreateUser(_context, "Maxim", "Volosenco", "maximvolosenco@gmail.com", "pass1");
+            var user2 = CreateUser(_context, "Alex", "Osa", "osa@klock.com", "pass2");
+            var user3 = CreateUser(_context, "Vova", "Leadavschi", "vova.leadavschi@gmail.com", "pass3");
 
             _context.SaveChanges();
 
-            _context.MessageGroups.Add(new MessageGroups {Title = "Tusovka"});
-            _context.MessageGroups.Add(new MessageGroups { Title = "Leadavschi Vova" });
-            _context.MessageGroups.Add(new MessageGroups { Title = "Maxim Volosenco" });
+            var messageGroup1 = CreateMessageGroup(_context, "FAF ONG", new List<User> { user1, user2});
+            var messageGroup2 = CreateMessageGroup(_context, "PAD", new List<User> { user3, user2 });
 
-            _context.Messages.Add(new Messages {Text = "Hello!", CreatedAt = DateTime.Now, MessageGroupsId = 1, UsersId = 1});
-            _context.Messages.Add(new Messages { Text = "Goodbuy!", CreatedAt = DateTime.Now, MessageGroupsId = 1, UsersId = 2 });
-            _context.Messages.Add(new Messages { Text = "Bratan", CreatedAt = DateTime.Now, MessageGroupsId = 2, UsersId = 2 });
-            _context.Messages.Add(new Messages { Text = "Teza", CreatedAt = DateTime.Now, MessageGroupsId = 2, UsersId = 3 });
-            _context.Messages.Add(new Messages { Text = "Leva", CreatedAt = DateTime.Now, MessageGroupsId = 3, UsersId = 1});
-            _context.Messages.Add(new Messages { Text = "Bravo", CreatedAt = DateTime.Now, MessageGroupsId = 3, UsersId = 3});
+            _context.SaveChanges();
 
-            _context.AttachedFiles.Add(new AttachedFiles
-                    { FileName = "breaj", MimeType = "txt", FileFormat = "deleted", MessagesId = 1 });
+            var message1 = CreateMessage(_context, "Gentlemen, you can’t fight in here. This is the war room.", user1, messageGroup1);
+            var message2 = CreateMessage(_context, "My mother always used to say: The older you get, the better you get, unless you’re a banana.", user2, messageGroup1);
+            var message3 = CreateMessage(_context, "Clothes make the man. Naked people have little or no influence in society.", user2, messageGroup1);
+            var message4 = CreateMessage(_context, "Before you marry a person, you should first make them use a computer with slow Internet to see who they really are.", user2, messageGroup1);
+            var message5 = CreateMessage(_context, "Ned, I would love to stand here and talk with you—but I’m not going to.", user2, messageGroup2);
+            var message6 = CreateMessage(_context, "“I’m not superstitious, but I am a little stitious.", user3, messageGroup2);
+
+            _context.SaveChanges();
+
+            var attachedFile = CreateAttachedFile(_context, "breaj", "txt", "deleted", message1);
+
             _context.SaveChanges();
         }
+
+        private static User CreateUser(
+            TeamsChatContext context,
+            string firstName,
+            string lastName,
+            string email,
+            string password
+            )
+        {
+            User user = new User
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                Password = password
+            };
+
+            context.Users.Add(user);
+            return user;
+        }
+
+        private static Message CreateMessage(
+            TeamsChatContext context,
+            string text,
+            User user,
+            MessageGroup messageGroup
+            )
+        {
+            Message message = new Message
+            {
+                Text = text,
+                CreatedAt = DateTime.Now,
+                MessageGroup = messageGroup,
+                User = user
+            };
+            context.Messages.Add(message);
+            return message;           
+        }
+
+        private static MessageGroup CreateMessageGroup(
+            TeamsChatContext context,
+            string title,
+            List<User> users
+            )
+        {
+            MessageGroup messageGroup = new MessageGroup
+            {
+                Title = title,
+                Users = users
+            };
+            context.MessageGroups.Add(messageGroup);
+            return messageGroup;
+        }
+
+        private static AttachedFile CreateAttachedFile(
+            TeamsChatContext context,
+            string fileName,
+            string mimeType,
+            string fileFormat,
+            Message message
+            )
+        {
+            AttachedFile attachedFile = new AttachedFile
+            {
+                FileName = fileName,
+                MimeType = mimeType,
+                FileFormat = fileFormat,
+                Message = message
+            };
+            context.AttachedFiles.Add(attachedFile);
+            return attachedFile;
+    }
     }
 }

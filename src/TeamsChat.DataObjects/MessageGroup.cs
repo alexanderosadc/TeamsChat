@@ -2,9 +2,9 @@
 
 namespace TeamsChat.DataObjects
 {
-    public class MessageGroups : Entity
+    public class MessageGroup : Entity
     {
         public string Title { get; set; }
-        public ICollection<Users> Users { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }

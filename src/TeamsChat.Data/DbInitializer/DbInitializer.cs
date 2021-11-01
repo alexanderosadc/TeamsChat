@@ -26,7 +26,7 @@ namespace TeamsChat.Data.DbInitializer
                         context.Database.Migrate();
 
                         _seed = new Seed(context);
-                        _seed.PopulateWithData();
+                        _seed.DevelopmentSeed();
                     }
                     catch (Exception ex)
                     {

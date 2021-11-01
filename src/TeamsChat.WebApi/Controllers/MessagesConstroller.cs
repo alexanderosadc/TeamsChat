@@ -14,9 +14,9 @@ namespace TeamsChat.WebApi.Controllers
         public MessagesConstroller(IUnitOfWork database, IMapper mapper) : base(database, mapper) { }
 
         [HttpGet]
-        public IEnumerable<Messages> GetMessages()
+        public IEnumerable<Message> GetMessages()
         {
-            var data = _database.GetRepository<Messages>()
+            var data = _database.GetRepository<Message>()
                 .GetList(selector: td => td);
 
             return data;

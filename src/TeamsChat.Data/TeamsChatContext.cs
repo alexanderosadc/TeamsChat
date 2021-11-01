@@ -8,10 +8,10 @@ namespace TeamsChat.Data
         public TeamsChatContext() { }
         public TeamsChatContext(DbContextOptions<TeamsChatContext> options) : base(options) { }
 
-        public virtual DbSet<AttachedFiles> AttachedFiles { get; set; }
-        public virtual DbSet<MessageGroups> MessageGroups { get; set; }
-        public virtual DbSet<Messages> Messages { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<AttachedFile> AttachedFiles { get; set; }
+        public virtual DbSet<MessageGroup> MessageGroups { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

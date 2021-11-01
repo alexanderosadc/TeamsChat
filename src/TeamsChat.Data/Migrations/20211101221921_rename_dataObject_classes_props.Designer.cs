@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TeamsChat.Data;
 
 namespace TeamsChat.Data.Migrations
 {
     [DbContext(typeof(TeamsChatContext))]
-    partial class TeamsChatContextModelSnapshot : ModelSnapshot
+    [Migration("20211101221921_rename_dataObject_classes_props")]
+    partial class rename_dataObject_classes_props
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,22 +23,22 @@ namespace TeamsChat.Data.Migrations
 
             modelBuilder.Entity("MessageGroupUser", b =>
                 {
-                    b.Property<int>("MessageGroupsID")
+                    b.Property<int>("MessageGroupsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersID")
+                    b.Property<int>("UsersId")
                         .HasColumnType("int");
 
-                    b.HasKey("MessageGroupsID", "UsersID");
+                    b.HasKey("MessageGroupsId", "UsersId");
 
-                    b.HasIndex("UsersID");
+                    b.HasIndex("UsersId");
 
                     b.ToTable("MessageGroupUser");
                 });
 
             modelBuilder.Entity("TeamsChat.DataObjects.AttachedFile", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -47,22 +49,25 @@ namespace TeamsChat.Data.Migrations
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MessageID")
+                    b.Property<int?>("MessageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MessagesId")
                         .HasColumnType("int");
 
                     b.Property<string>("MimeType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("MessageID");
+                    b.HasIndex("MessageId");
 
                     b.ToTable("AttachedFiles");
                 });
 
             modelBuilder.Entity("TeamsChat.DataObjects.Message", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -70,27 +75,33 @@ namespace TeamsChat.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("MessageGroupID")
+                    b.Property<int?>("MessageGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MessageGroupsId")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserID")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("MessageGroupID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("MessageGroupId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("TeamsChat.DataObjects.MessageGroup", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -98,14 +109,14 @@ namespace TeamsChat.Data.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("MessageGroups");
                 });
 
             modelBuilder.Entity("TeamsChat.DataObjects.User", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -122,7 +133,7 @@ namespace TeamsChat.Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
@@ -131,13 +142,13 @@ namespace TeamsChat.Data.Migrations
                 {
                     b.HasOne("TeamsChat.DataObjects.MessageGroup", null)
                         .WithMany()
-                        .HasForeignKey("MessageGroupsID")
+                        .HasForeignKey("MessageGroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TeamsChat.DataObjects.User", null)
                         .WithMany()
-                        .HasForeignKey("UsersID")
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -146,7 +157,7 @@ namespace TeamsChat.Data.Migrations
                 {
                     b.HasOne("TeamsChat.DataObjects.Message", "Message")
                         .WithMany()
-                        .HasForeignKey("MessageID");
+                        .HasForeignKey("MessageId");
 
                     b.Navigation("Message");
                 });
@@ -155,11 +166,11 @@ namespace TeamsChat.Data.Migrations
                 {
                     b.HasOne("TeamsChat.DataObjects.MessageGroup", "MessageGroup")
                         .WithMany()
-                        .HasForeignKey("MessageGroupID");
+                        .HasForeignKey("MessageGroupId");
 
                     b.HasOne("TeamsChat.DataObjects.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("MessageGroup");
 
