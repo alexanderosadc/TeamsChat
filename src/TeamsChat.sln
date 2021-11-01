@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.WebApi", "TeamsChat.WebApi\TeamsChat.WebApi.csproj", "{A2F2275A-BF28-4FB3-9CEF-D264D844C344}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.DataObjects", "TeamsChat.DataObjects\TeamsChat.DataObjects.csproj", "{89E49570-0C84-4A79-9608-03C59520A554}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.Data", "TeamsChat.Data\TeamsChat.Data.csproj", "{711928AF-2253-4F90-9B19-0523AC9A4DA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2F2275A-BF28-4FB3-9CEF-D264D844C344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2F2275A-BF28-4FB3-9CEF-D264D844C344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2F2275A-BF28-4FB3-9CEF-D264D844C344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2F2275A-BF28-4FB3-9CEF-D264D844C344}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89E49570-0C84-4A79-9608-03C59520A554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89E49570-0C84-4A79-9608-03C59520A554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89E49570-0C84-4A79-9608-03C59520A554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89E49570-0C84-4A79-9608-03C59520A554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{711928AF-2253-4F90-9B19-0523AC9A4DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{711928AF-2253-4F90-9B19-0523AC9A4DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{711928AF-2253-4F90-9B19-0523AC9A4DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{711928AF-2253-4F90-9B19-0523AC9A4DA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E52C512E-8781-4806-BB38-9687E9C738F5}
+	EndGlobalSection
+EndGlobal
