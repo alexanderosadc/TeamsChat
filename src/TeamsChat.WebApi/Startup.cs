@@ -1,4 +1,3 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -34,16 +33,12 @@ namespace TeamsChat.WebApi
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new AttachedFilesProfile());
-                mc.AddProfile(new MessageGroupsProfile());
-                mc.AddProfile(new MessagesProfile());
-                mc.AddProfile(new UsersProfile());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            services.AddAutoMapper(
+                typeof(AttachedFilesProfile),
+                typeof(MessageGroupsProfile),
+                typeof(MessagesProfile),
+                typeof(UsersProfile)
+                );
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
