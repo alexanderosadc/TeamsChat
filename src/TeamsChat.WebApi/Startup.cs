@@ -10,7 +10,9 @@ using TeamsChat.Data;
 using TeamsChat.Data.DbInitializer;
 using TeamsChat.Data.Repository;
 using TeamsChat.Data.UnitOfWork;
+using TeamsChat.MongoDbService.Settings;
 using TeamsChat.WebApi.Mapper;
+using Microsoft.Extensions.Options;
 
 namespace TeamsChat.WebApi
 {
@@ -29,6 +31,12 @@ namespace TeamsChat.WebApi
             services.AddDbContext<TeamsChatContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.Configure<DataBaseSettings>(
+                Configuration.GetSection(nameof(DataBaseSettings)));
+
+            services.AddSingleton(sp =>
+                sp.GetRequiredService<IOptions<IDataBaseSettings>>().Value);
+
             services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
@@ -40,7 +48,11 @@ namespace TeamsChat.WebApi
                 typeof(UsersProfile)
                 );
 
-            services.AddControllers();
+            //services.AddControllers();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TeamsChat.WebApi", Version = "v1" });

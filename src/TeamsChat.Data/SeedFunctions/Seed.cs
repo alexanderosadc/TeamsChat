@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TeamsChat.DataObjects;
+using TeamsChat.DataObjects.MSSQLModels;
 
 namespace TeamsChat.Data.SeedFunctions
 {

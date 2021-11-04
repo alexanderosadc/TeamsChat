@@ -1,6 +1,7 @@
 ﻿using System;
 using TeamsChat.Data.Repository;
-using TeamsChat.DataObjects;
+using TeamsChat.DataObjects.MSSQLModels;
+
 
 namespace TeamsChat.Data.UnitOfWork
 {

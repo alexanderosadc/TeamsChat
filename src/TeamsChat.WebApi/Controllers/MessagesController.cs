@@ -3,18 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using TeamsChat.Data.UnitOfWork;
-using TeamsChat.DataObjects;
+using TeamsChat.DataObjects.MSSQLModels;
 using TeamsChat.WebApi.DTO;
-using System.Threading.Tasks;
 using System;
 
 namespace TeamsChat.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MessagesConstroller : BaseController
+    public class MessagesController : BaseController
     {
-        public MessagesConstroller(IUnitOfWork database, IMapper mapper) : base(database, mapper) { }
+        public MessagesController(IUnitOfWork database, IMapper mapper) : base(database, mapper) { }
 
         [HttpGet]
         public ActionResult<IEnumerable<MessageDTO>> GetMessages()
@@ -40,6 +39,7 @@ namespace TeamsChat.WebApi.Controllers
 
             return Ok(data);
         }
+
         [HttpPost]
         public ActionResult<MessageDTO> PostMessage([FromBody] MessageDTO messageDTO)
         {

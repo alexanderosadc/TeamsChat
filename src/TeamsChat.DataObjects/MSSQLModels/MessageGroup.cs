@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TeamsChat.DataObjects
+namespace TeamsChat.DataObjects.MSSQLModels
 {
     public class MessageGroup : Entity
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
-using TeamsChat.DataObjects;
+using TeamsChat.DataObjects.MSSQLModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

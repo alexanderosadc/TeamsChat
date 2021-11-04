@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using TeamsChat.Data.Repository;
-using TeamsChat.DataObjects;
+using TeamsChat.DataObjects.MSSQLModels;
 
 namespace TeamsChat.Data.UnitOfWork
 {

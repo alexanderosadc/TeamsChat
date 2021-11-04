@@ -1,4 +1,4 @@
-﻿namespace TeamsChat.DataObjects
+﻿namespace TeamsChat.DataObjects.MSSQLModels
 {
     public abstract class Entity
     {

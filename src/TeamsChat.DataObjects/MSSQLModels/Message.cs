@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace TeamsChat.DataObjects
-{
+namespace TeamsChat.DataObjects.MSSQLModels
+{ 
     public class Message : Entity
     {
         public string Text { get; set; }
