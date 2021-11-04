@@ -13,4 +13,4 @@ namespace TeamsChat.MongoDbService.Settings
         string DatabaseName { get; set; }
     }
 }
-}
+
