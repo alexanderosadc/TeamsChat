@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamsChat.MongoDbService.Settings
 {
-    public class DataBaseSettings : IDataBaseSettings
+    public class MongoDbSettings : IMongoDbSettings
     {
         public string LogsCollectionName { get; set; }
         public string ConnectionString { get; set; }

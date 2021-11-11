@@ -1,13 +1,10 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using TeamsChat.DataObjects.MongoDbModels.EntitySetUp;
 
 namespace TeamsChat.DataObjects.MongoDbModels
 {
-    public class Logs
+    [BsonCollection("Logs")]
+    public class Logs : Entity
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
         public string Request { get; set; }
         public string Response { get; set; }
     }

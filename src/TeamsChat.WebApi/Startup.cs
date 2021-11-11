@@ -13,7 +13,7 @@ using TeamsChat.Data.UnitOfWork;
 using TeamsChat.MongoDbService.Settings;
 using TeamsChat.WebApi.Mapper;
 using Microsoft.Extensions.Options;
-using TeamsChat.WebApi.Services;
+using TeamsChat.MongoDbService.Repository;
 
 namespace TeamsChat.WebApi
 {
@@ -36,14 +36,13 @@ namespace TeamsChat.WebApi
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
-            services.Configure<DataBaseSettings>(
-                Configuration.GetSection(nameof(DataBaseSettings)));
+            services.Configure<MongoDbSettings>(
+                Configuration.GetSection(nameof(MongoDbSettings)));
 
-            services.AddSingleton<IDataBaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<DataBaseSettings>>().Value);
+            services.AddSingleton<IMongoDbSettings>(sp =>
+                sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
-            services.AddSingleton<LogService>();
-
+            services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
             services.AddAutoMapper(
                 typeof(AttachedFilesProfile),
@@ -52,11 +51,10 @@ namespace TeamsChat.WebApi
                 typeof(UsersProfile)
                 );
 
-            //services.AddControllers();
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
+        );
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TeamsChat.WebApi", Version = "v1" });
