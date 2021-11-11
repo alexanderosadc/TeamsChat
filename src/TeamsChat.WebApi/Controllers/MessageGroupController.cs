@@ -6,6 +6,7 @@ using System.Linq;
 using TeamsChat.SSMS.UnitOfWork;
 using TeamsChat.DataObjects.SSMSModels;
 using TeamsChat.WebApi.DTO;
+using TeamsChat.MongoDbService.ModelRepositories;
 
 namespace TeamsChat.WebApi.Controllers
 {
@@ -13,7 +14,7 @@ namespace TeamsChat.WebApi.Controllers
     [Route("[controller]")]
     public class MessageGroupController : BaseController
     {
-        public MessageGroupController(ISSMSUnitOfWork database, IMapper mapper) : base(database, mapper) { }
+        public MessageGroupController(ISSMSUnitOfWork database, IMapper mapper, ILogsRepository logsRepository) : base(database, mapper, logsRepository) { }
 
         [HttpPost]
         public ActionResult<MessageGroupDTO> PostGroup([FromBody] MessageGroupDTO groupDTO)

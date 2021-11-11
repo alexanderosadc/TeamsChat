@@ -36,7 +36,8 @@ namespace TeamsChat.WebApi
                 typeof(AttachedFilesProfile),
                 typeof(MessageGroupsProfile),
                 typeof(MessagesProfile),
-                typeof(UsersProfile)
+                typeof(UsersProfile),
+                typeof(LogsProfile)
                 );
 
             services.AddControllersWithViews()

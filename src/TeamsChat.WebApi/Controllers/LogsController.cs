@@ -6,34 +6,36 @@ using TeamsChat.SSMS.UnitOfWork;
 using TeamsChat.DataObjects.MongoDbModels;
 using TeamsChat.MongoDbService.ModelRepositories;
 using TeamsChat.MongoDbService.UnitOfWork;
+using TeamsChat.WebApi.DTO;
+using System.Linq;
 
 namespace TeamsChat.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LogsController : ControllerBase
+    public class LogsController : BaseController
     {
-        private readonly ILogsRepository _productRepository;
-        private readonly IMongoDbUnitOfWork _uow;
-
-        public LogsController(ILogsRepository productRepository, IMongoDbUnitOfWork uow)
-        {
-            _productRepository = productRepository;
-            _uow = uow;
-        }
+        public LogsController(ISSMSUnitOfWork database, IMapper mapper, ILogsRepository logsRepository) : base(database, mapper, logsRepository) { }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Logs>>> Get()
+        public async Task<ActionResult<IEnumerable<LogDTO>>> Get()
         {
-            var logs = await _productRepository.GetAll();
+            var logsDb = await _logsRepository.GetAll();
+
+            IList<LogDTO> logs = new List<LogDTO>();
+
+            foreach (var log in logsDb)
+            {
+                logs.Add(_mapper.Map<LogDTO>(log));
+            }
 
             return Ok(logs);
         }
+
         [HttpPost]
         public ActionResult<Logs> Insert([FromBody] Logs log)
         {
-
-            _productRepository.Insert(log);
+            _logsRepository.Insert(log);
 
             return Ok();
         }
