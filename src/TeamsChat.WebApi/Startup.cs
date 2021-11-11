@@ -6,14 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
-using TeamsChat.Data;
-using TeamsChat.Data.DbInitializer;
-using TeamsChat.Data.Repository;
-using TeamsChat.Data.UnitOfWork;
-using TeamsChat.MongoDbService.Settings;
+using TeamsChat.SSMS;
+using TeamsChat.SSMS.DbInitializer;
+using TeamsChat.SSMS.Repository;
+using TeamsChat.SSMS.UnitOfWork;
 using TeamsChat.WebApi.Mapper;
-using Microsoft.Extensions.Options;
-using TeamsChat.MongoDbService.Repository;
+using TeamsChat.MongoDbService.ModelRepositories;
+using TeamsChat.MongoDbService.Context;
+using TeamsChat.MongoDbService.UnitOfWork;
 
 namespace TeamsChat.WebApi
 {
@@ -28,21 +28,9 @@ namespace TeamsChat.WebApi
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<TeamsChatContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddScoped<IDbInitializer, DbInitializer>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
-
-            services.Configure<MongoDbSettings>(
-                Configuration.GetSection(nameof(MongoDbSettings)));
-
-            services.AddSingleton<IMongoDbSettings>(sp =>
-                sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
-
-            services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
+        {            
+            SSMSService(services);
+            MongoDbServices(services);
 
             services.AddAutoMapper(
                 typeof(AttachedFilesProfile),
@@ -76,7 +64,7 @@ namespace TeamsChat.WebApi
                 var scopedFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
                 using (var scope = scopedFactory.CreateScope())
                 {
-                    var dbInitializer = scope.ServiceProvider.GetService<IDbInitializer>();
+                    var dbInitializer = scope.ServiceProvider.GetService<SSMSIDbInitializer>();
                     dbInitializer.Initialize();
                 }
             }
@@ -95,6 +83,22 @@ namespace TeamsChat.WebApi
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void MongoDbServices(IServiceCollection services)
+        {
+            services.AddScoped<IMongoDbContext, MongoDbContext>();
+            services.AddScoped<IMongoDbUnitOfWork, MongoDbUnitOfWork>();
+            services.AddScoped<ILogsRepository, LogsRepository>();
+        }
+        private void SSMSService(IServiceCollection services)
+        {
+            services.AddDbContext<SSMSContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<SSMSIDbInitializer, SSMSDbInitializer>();
+            services.AddScoped(typeof(ISSMSRepository<>), typeof(SSMSRepository<>));
+            services.AddScoped(typeof(ISSMSUnitOfWork), typeof(SSMSUnitOfWork));
         }
     }
 }

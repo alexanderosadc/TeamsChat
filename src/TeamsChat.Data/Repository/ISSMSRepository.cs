@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
-using TeamsChat.DataObjects.MSSQLModels;
+using TeamsChat.DataObjects.SSMSModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace TeamsChat.Data.Repository
+namespace TeamsChat.SSMS.Repository
 {
-    public interface IRepository<TEntity> where TEntity : Entity, new()
+    public interface ISSMSRepository<TEntity> where TEntity : Entity, new()
     {
         TEntity SingleOrDefault(
             Expression<Func<TEntity, bool>> filter = null,

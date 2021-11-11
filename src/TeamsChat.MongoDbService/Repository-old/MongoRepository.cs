@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 using TeamsChat.DataObjects.MongoDbModels.EntitySetUp;
 using TeamsChat.MongoDbService.Settings;
 
-namespace TeamsChat.MongoDbService.Repository
+namespace TeamsChat.MongoDbService.ModelRepositories
 {
     public class MongoRepository<TEntity> : IMongoRepository<TEntity>
         where TEntity : IEntity
     {
         private readonly IMongoCollection<TEntity> _collection;
 
-        public MongoRepository(IMongoDbSettings settings)
-        {
-            var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
-            _collection = database.GetCollection<TEntity>(GetCollectionName(typeof(TEntity)));
-        }
+        //public MongoRepository(IMongoDbSettings settings)
+        //{
+        //    var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
+        //    _collection = database.GetCollection<TEntity>(GetCollectionName(typeof(TEntity)));
+        //}
 
         private protected string GetCollectionName(Type entityType)
         {

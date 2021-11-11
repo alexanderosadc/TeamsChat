@@ -1,4 +1,4 @@
-﻿namespace TeamsChat.DataObjects.MSSQLModels
+﻿namespace TeamsChat.DataObjects.SSMSModels
 {
     public class AttachedFile : Entity
     {

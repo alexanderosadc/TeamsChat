@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.WebApi", "TeamsCh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.DataObjects", "TeamsChat.DataObjects\TeamsChat.DataObjects.csproj", "{89E49570-0C84-4A79-9608-03C59520A554}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.MSSQLService", "TeamsChat.Data\TeamsChat.MSSQLService.csproj", "{711928AF-2253-4F90-9B19-0523AC9A4DA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.SSMSService", "TeamsChat.Data\TeamsChat.SSMSService.csproj", "{711928AF-2253-4F90-9B19-0523AC9A4DA6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.MongoDbService", "TeamsChat.MongoDbService\TeamsChat.MongoDbService.csproj", "{5AFC5315-3A48-4570-A55D-C2D4F9F83718}"
 	ProjectSection(ProjectDependencies) = postProject

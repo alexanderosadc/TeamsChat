@@ -8,9 +8,9 @@ namespace TeamsChat.MongoDbService.Settings
 {
     public interface IMongoDbSettings
     {            
-        string LogsCollectionName { get; set; }
-        string ConnectionString { get; set; }
-        string DatabaseName { get; set; }
+        //string LogsCollectionName { get; set; }
+        //string ConnectionString { get; set; }
+        //string DatabaseName { get; set; }
     }
 }
 

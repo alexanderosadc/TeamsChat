@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using TeamsChat.Data.UnitOfWork;
-using TeamsChat.DataObjects.MSSQLModels;
+using TeamsChat.SSMS.UnitOfWork;
+using TeamsChat.DataObjects.SSMSModels;
 using TeamsChat.WebApi.DTO;
 
 namespace TeamsChat.WebApi.Controllers
@@ -13,7 +13,7 @@ namespace TeamsChat.WebApi.Controllers
     [Route("[controller]")]
     public class MessageGroupController : BaseController
     {
-        public MessageGroupController(IUnitOfWork database, IMapper mapper) : base(database, mapper) { }
+        public MessageGroupController(ISSMSUnitOfWork database, IMapper mapper) : base(database, mapper) { }
 
         [HttpPost]
         public ActionResult<MessageGroupDTO> PostGroup([FromBody] MessageGroupDTO groupDTO)

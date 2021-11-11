@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using TeamsChat.Data.SeedFunctions;
+using TeamsChat.SSMS.SeedFunctions;
 
-namespace TeamsChat.Data.DbInitializer
+namespace TeamsChat.SSMS.DbInitializer
 {
-    public class DbInitializer : IDbInitializer
+    public class SSMSDbInitializer : SSMSIDbInitializer
     {
         private readonly IServiceScopeFactory _scopeFactory;
 
         private Seed _seed;
-        public DbInitializer(IServiceScopeFactory scopeFactory)
+        public SSMSDbInitializer(IServiceScopeFactory scopeFactory)
         {
             _scopeFactory = scopeFactory;
         }
@@ -19,7 +19,7 @@ namespace TeamsChat.Data.DbInitializer
         {
             using (var serviceScope = _scopeFactory.CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<TeamsChatContext>())
+                using (var context = serviceScope.ServiceProvider.GetService<SSMSContext>())
                 {
                     try
                     {

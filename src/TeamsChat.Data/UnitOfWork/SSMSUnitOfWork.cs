@@ -1,26 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
-using TeamsChat.Data.Repository;
-using TeamsChat.DataObjects.MSSQLModels;
+using TeamsChat.SSMS.Repository;
+using TeamsChat.DataObjects.SSMSModels;
 
-namespace TeamsChat.Data.UnitOfWork
+namespace TeamsChat.SSMS.UnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork
+    public class SSMSUnitOfWork : ISSMSUnitOfWork
     {
-        private readonly TeamsChatContext _context;
+        private readonly SSMSContext _context;
         private IDbContextTransaction _transaction;
         private Dictionary<(Type type, string Name), IDisposable> _repositories;
 
-        public UnitOfWork(TeamsChatContext context)
+        public SSMSUnitOfWork(SSMSContext context)
         {
             _repositories = new Dictionary<(Type type, string Name), IDisposable>();
             _context = context;
         }
 
-        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : Entity, new()
+        public ISSMSRepository<TEntity> GetRepository<TEntity>() where TEntity : Entity, new()
         {
-            return (IRepository<TEntity>)GetOrAddRepository(typeof(TEntity), new Repository<TEntity>(_context));
+            return (ISSMSRepository<TEntity>)GetOrAddRepository(typeof(TEntity), new SSMSRepository<TEntity>(_context));
         }
 
         public int SaveChanges()

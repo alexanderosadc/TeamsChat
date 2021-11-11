@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TeamsChat.DataObjects.MSSQLModels;
+using TeamsChat.DataObjects.SSMSModels;
 
-namespace TeamsChat.Data
+namespace TeamsChat.SSMS
 {
-    public class TeamsChatContext : DbContext
+    public class SSMSContext : DbContext
     {
-        public TeamsChatContext() { }
-        public TeamsChatContext(DbContextOptions<TeamsChatContext> options) : base(options) { }
+        public SSMSContext() { }
+        public SSMSContext(DbContextOptions<SSMSContext> options) : base(options) { }
 
         public virtual DbSet<AttachedFile> AttachedFiles { get; set; }
         public virtual DbSet<MessageGroup> MessageGroups { get; set; }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TeamsChat.DataObjects.MSSQLModels;
+using TeamsChat.DataObjects.SSMSModels;
 using TeamsChat.WebApi.DTO;
 
 namespace TeamsChat.WebApi.Mapper

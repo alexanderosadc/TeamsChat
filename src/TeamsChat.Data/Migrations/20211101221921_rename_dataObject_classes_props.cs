@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TeamsChat.Data.Migrations
+namespace TeamsChat.SSMS.Migrations
 {
     public partial class rename_dataObject_classes_props : Migration
     {

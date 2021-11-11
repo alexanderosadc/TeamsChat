@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TeamsChat.DataObjects.MSSQLModels
+namespace TeamsChat.DataObjects.SSMSModels
 { 
     public class Message : Entity
     {

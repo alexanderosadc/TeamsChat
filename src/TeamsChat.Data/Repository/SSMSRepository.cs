@@ -1,19 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using TeamsChat.DataObjects.MSSQLModels;
+using TeamsChat.DataObjects.SSMSModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace TeamsChat.Data.Repository
+namespace TeamsChat.SSMS.Repository
 {
-    public class Repository<TEntity> : IDisposable, IRepository<TEntity> where TEntity : Entity, new()
+    public class SSMSRepository<TEntity> : IDisposable, ISSMSRepository<TEntity> where TEntity : Entity, new()
     {
-        protected readonly TeamsChatContext _context;
+        protected readonly SSMSContext _context;
         protected readonly DbSet<TEntity> _dbSet;
 
-        public Repository(TeamsChatContext context)
+        public SSMSRepository(SSMSContext context)
         {
             _context = context ?? throw new ArgumentException(nameof(context));
             _dbSet = _context.Set<TEntity>();

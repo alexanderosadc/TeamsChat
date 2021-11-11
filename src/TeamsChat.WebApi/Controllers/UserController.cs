@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using TeamsChat.Data.UnitOfWork;
-using TeamsChat.DataObjects.MSSQLModels;
+using TeamsChat.SSMS.UnitOfWork;
+using TeamsChat.DataObjects.SSMSModels;
 using TeamsChat.WebApi.DTO;
 
 namespace TeamsChat.WebApi.Controllers
@@ -13,7 +13,7 @@ namespace TeamsChat.WebApi.Controllers
     [Route("[controller]")]
     public class UserController : BaseController
     {
-        public UserController(IUnitOfWork database, IMapper mapper) : base(database, mapper) { }
+        public UserController(ISSMSUnitOfWork database, IMapper mapper) : base(database, mapper) { }
 
         [HttpGet("search")]
         public ActionResult<IEnumerable<UserDTO>> FindUserByName([FromQuery] string firstName, string lastName)

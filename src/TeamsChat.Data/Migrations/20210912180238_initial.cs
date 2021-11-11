@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TeamsChat.Data.Migrations
+namespace TeamsChat.SSMS.Migrations
 {
     public partial class initial : Migration
     {

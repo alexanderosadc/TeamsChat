@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using TeamsChat.Data.UnitOfWork;
-using TeamsChat.DataObjects.MSSQLModels;
+using TeamsChat.SSMS.UnitOfWork;
+using TeamsChat.DataObjects.SSMSModels;
 using TeamsChat.WebApi.DTO;
 using System;
 
@@ -13,7 +13,7 @@ namespace TeamsChat.WebApi.Controllers
     [Route("[controller]")]
     public class MessagesController : BaseController
     {
-        public MessagesController(IUnitOfWork database, IMapper mapper) : base(database, mapper) { }
+        public MessagesController(ISSMSUnitOfWork database, IMapper mapper) : base(database, mapper) { }
 
         [HttpGet]
         public ActionResult<IEnumerable<MessageDTO>> GetMessages()

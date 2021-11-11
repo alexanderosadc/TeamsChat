@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TeamsChat.Data.DbInitializer
+namespace TeamsChat.SSMS.DbInitializer
 {
-    public interface IDbInitializer
+    public interface SSMSIDbInitializer
     {
         void Initialize();
     }

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TeamsChat.DataObjects.MSSQLModels;
+using TeamsChat.DataObjects.SSMSModels;
 
-namespace TeamsChat.Data.SeedFunctions
+namespace TeamsChat.SSMS.SeedFunctions
 {
     public class Seed
     {
-        private TeamsChatContext _context;
-        public Seed(TeamsChatContext context)
+        private SSMSContext _context;
+        public Seed(SSMSContext context)
         {
             _context = context;
         }
@@ -43,7 +43,7 @@ namespace TeamsChat.Data.SeedFunctions
         }
 
         private static User CreateUser(
-            TeamsChatContext context,
+            SSMSContext context,
             string firstName,
             string lastName,
             string email,
@@ -63,7 +63,7 @@ namespace TeamsChat.Data.SeedFunctions
         }
 
         private static Message CreateMessage(
-            TeamsChatContext context,
+            SSMSContext context,
             string text,
             User user,
             MessageGroup messageGroup
@@ -81,7 +81,7 @@ namespace TeamsChat.Data.SeedFunctions
         }
 
         private static MessageGroup CreateMessageGroup(
-            TeamsChatContext context,
+            SSMSContext context,
             string title,
             List<User> users
             )
@@ -96,7 +96,7 @@ namespace TeamsChat.Data.SeedFunctions
         }
 
         private static AttachedFile CreateAttachedFile(
-            TeamsChatContext context,
+            SSMSContext context,
             string fileName,
             string mimeType,
             string fileFormat,
