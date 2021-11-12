@@ -5,9 +5,14 @@ using System.Threading.Tasks;
 using TeamsChat.SSMS.UnitOfWork;
 using TeamsChat.DataObjects.MongoDbModels;
 using TeamsChat.MongoDbService.ModelRepositories;
-using TeamsChat.MongoDbService.UnitOfWork;
 using TeamsChat.WebApi.DTO;
+using System;
 using System.Linq;
+using MongoDB.Bson;
+using TeamsChat.WebApi.Common;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
 
 namespace TeamsChat.WebApi.Controllers
 {
@@ -15,12 +20,19 @@ namespace TeamsChat.WebApi.Controllers
     [Route("[controller]")]
     public class LogsController : BaseController
     {
-        public LogsController(ISSMSUnitOfWork database, IMapper mapper, ILogsRepository logsRepository) : base(database, mapper, logsRepository) { }
+        private ILogsRepository _logsRepository;
+        public LogsController(ISSMSUnitOfWork database, IMapper mapper, IControllerManager controllerManager, ILogsRepository logsRepository) : base(database, mapper, controllerManager) 
+        {
+            _logsRepository = logsRepository;
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LogDTO>>> Get()
         {
             var logsDb = await _logsRepository.GetAll();
+
+            if (logsDb.Count() == 0)
+                return StatusCode(204);
 
             IList<LogDTO> logs = new List<LogDTO>();
 
@@ -32,12 +44,16 @@ namespace TeamsChat.WebApi.Controllers
             return Ok(logs);
         }
 
-        [HttpPost]
-        public ActionResult<Logs> Insert([FromBody] Logs log)
+        // mock endpoint 
+        [HttpGet("getOne")]
+        public async Task<ActionResult<LogDTO>> GetOne(ObjectId id)
         {
-            _logsRepository.Insert(log);
+            var logDb = await _logsRepository.GetFiltered(
+                filterExpression: log => log.Id == id);            
 
-            return Ok();
+            var log = _mapper.Map<LogDTO>(logDb.First());
+
+            return Ok(log);
         }
     }
 }

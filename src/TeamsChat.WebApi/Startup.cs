@@ -14,6 +14,7 @@ using TeamsChat.WebApi.Mapper;
 using TeamsChat.MongoDbService.ModelRepositories;
 using TeamsChat.MongoDbService.Context;
 using TeamsChat.MongoDbService.UnitOfWork;
+using TeamsChat.WebApi.Common;
 
 namespace TeamsChat.WebApi
 {
@@ -31,6 +32,8 @@ namespace TeamsChat.WebApi
         {            
             SSMSService(services);
             MongoDbServices(services);
+
+            services.AddScoped<IControllerManager, ControllerManager>();
 
             services.AddAutoMapper(
                 typeof(AttachedFilesProfile),

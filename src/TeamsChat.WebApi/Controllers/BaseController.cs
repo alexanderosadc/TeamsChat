@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TeamsChat.MongoDbService.ModelRepositories;
 using TeamsChat.SSMS.UnitOfWork;
+using TeamsChat.WebApi.Common;
 
 namespace TeamsChat.WebApi.Controllers
 {
@@ -9,13 +10,13 @@ namespace TeamsChat.WebApi.Controllers
     {
         protected readonly ISSMSUnitOfWork _database;
         protected readonly IMapper _mapper;
-        protected readonly ILogsRepository _logsRepository;
+        protected readonly IControllerManager _controllerManager;
 
-        public BaseController(ISSMSUnitOfWork database, IMapper mapper, ILogsRepository logsRepository)
+        public BaseController(ISSMSUnitOfWork database, IMapper mapper, IControllerManager controllerManager)
         {
             _database = database;
             _mapper = mapper;
-            _logsRepository = logsRepository;
+            _controllerManager = controllerManager;
         }
     }
 }

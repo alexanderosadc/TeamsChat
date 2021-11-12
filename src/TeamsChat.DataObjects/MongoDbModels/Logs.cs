@@ -6,6 +6,7 @@ namespace TeamsChat.DataObjects.MongoDbModels
     public class Logs : Entity
     {
         public string Request { get; set; }
-        public string Response { get; set; }
+        public string Method { get; set; }
+        public int StatusCode { get; set; }
     }
 }

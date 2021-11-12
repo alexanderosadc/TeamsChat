@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using TeamsChat.SSMS.UnitOfWork;
 using TeamsChat.DataObjects.SSMSModels;
 using TeamsChat.WebApi.DTO;
-using TeamsChat.MongoDbService.ModelRepositories;
+using TeamsChat.WebApi.Common;
 
 namespace TeamsChat.WebApi.Controllers
 {
@@ -14,7 +14,7 @@ namespace TeamsChat.WebApi.Controllers
     [Route("[controller]")]
     public class UserController : BaseController
     {
-        public UserController(ISSMSUnitOfWork database, IMapper mapper, ILogsRepository logsRepository) : base(database, mapper, logsRepository) { }
+        public UserController(ISSMSUnitOfWork database, IMapper mapper, IControllerManager controllerManager) : base(database, mapper, controllerManager) { }
 
         [HttpGet("search")]
         public ActionResult<IEnumerable<UserDTO>> FindUserByName([FromQuery] string firstName, string lastName)
@@ -25,10 +25,14 @@ namespace TeamsChat.WebApi.Controllers
                         && (lastName == null || user.LastName.ToLower().Contains(lastName)));
 
             if (userDb == null)
-                return NotFound();
+            {
+                _controllerManager.CreateLog(HttpContext, 204);
+                return NoContent();
+            }
 
             var userDto = _mapper.Map<UserDTO>(userDb);
 
+            _controllerManager.CreateLog(HttpContext, 200);
             return Ok(userDto);
         }
 
@@ -45,10 +49,14 @@ namespace TeamsChat.WebApi.Controllers
                         .Include(user => user.MessageGroups));
 
             if (userDb == null)
-                return NotFound();
+            {
+                _controllerManager.CreateLog(HttpContext, 203);
+                return NoContent();
+            }
 
             var userDto = _mapper.Map<UserDTO>(userDb);
 
+            _controllerManager.CreateLog(HttpContext, 200);
             return Ok(userDto);
         }
 
@@ -63,10 +71,17 @@ namespace TeamsChat.WebApi.Controllers
                 Password = userDTO.Password
             };
 
-            _database.GetRepository<User>().Insert(userToDb);
+            var user = _database.GetRepository<User>().Insert(userToDb);
             _database.SaveChanges();
 
-            return Ok();
+            if (user.ID == 0)
+            {
+                _controllerManager.CreateLog(HttpContext, 500);
+                return StatusCode(500);
+            }
+
+            _controllerManager.CreateLog(HttpContext, 201);
+            return StatusCode(201);
         }
     }
 }
