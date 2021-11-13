@@ -3,16 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TeamsChat.SSMS.UnitOfWork;
-using TeamsChat.DataObjects.MongoDbModels;
 using TeamsChat.MongoDbService.ModelRepositories;
 using TeamsChat.WebApi.DTO;
-using System;
 using System.Linq;
 using MongoDB.Bson;
 using TeamsChat.WebApi.Common;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Http;
+using TeamsChat.DatabaseInterface;
 
 namespace TeamsChat.WebApi.Controllers
 {
@@ -21,9 +18,9 @@ namespace TeamsChat.WebApi.Controllers
     public class LogsController : BaseController
     {
         private ILogsRepository _logsRepository;
-        public LogsController(ISSMSUnitOfWork database, IMapper mapper, IControllerManager controllerManager, ILogsRepository logsRepository) : base(database, mapper, controllerManager) 
+        public LogsController(IDatabaseFactory databaseFactory, IMapper mapper, IControllerManager controllerManager) : base(databaseFactory, mapper, controllerManager)
         {
-            _logsRepository = logsRepository;
+            _logsRepository = databaseFactory.GetDb<ILogsRepository>();
         }
 
         [HttpGet]
@@ -49,7 +46,7 @@ namespace TeamsChat.WebApi.Controllers
         public async Task<ActionResult<LogDTO>> GetOne(ObjectId id)
         {
             var logDb = await _logsRepository.GetFiltered(
-                filterExpression: log => log.Id == id);            
+                filterExpression: log => log.Id == id);
 
             var log = _mapper.Map<LogDTO>(logDb.First());
 

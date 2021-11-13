@@ -7,6 +7,8 @@ using TeamsChat.SSMS.UnitOfWork;
 using TeamsChat.DataObjects.SSMSModels;
 using TeamsChat.WebApi.DTO;
 using TeamsChat.WebApi.Common;
+using System.Threading.Tasks;
+using TeamsChat.DatabaseInterface;
 
 namespace TeamsChat.WebApi.Controllers
 {
@@ -14,10 +16,15 @@ namespace TeamsChat.WebApi.Controllers
     [Route("[controller]")]
     public class MessageGroupController : BaseController
     {
-        public MessageGroupController(ISSMSUnitOfWork database, IMapper mapper, IControllerManager controllerManager) : base(database, mapper, controllerManager) { }
+        ISSMSUnitOfWork _database;
+
+        public MessageGroupController(IDatabaseFactory databaseFactory, IMapper mapper, IControllerManager controllerManager) : base(databaseFactory, mapper, controllerManager) 
+        {
+            _database = databaseFactory.GetDb<ISSMSUnitOfWork>();
+        }
 
         [HttpPost]
-        public ActionResult<MessageGroupDTO> PostGroup([FromBody] MessageGroupDTO groupDTO)
+        public async Task<ActionResult<MessageGroupDTO>> PostGroup([FromBody] MessageGroupDTO groupDTO)
         {
             var users = _database.GetRepository<User>().GetList(
                 selector: user => user,
@@ -34,11 +41,11 @@ namespace TeamsChat.WebApi.Controllers
 
             if (groupToDb.ID == 0)
             {
-                _controllerManager.CreateLog(HttpContext, 500);
+                await _controllerManager.CreateLog(HttpContext, 500);
                 return StatusCode(500);
             }
 
-            _controllerManager.CreateLog(HttpContext, 201);
+            await _controllerManager.CreateLog(HttpContext, 201);
             return StatusCode(201);
         }
     }

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TeamsChat.DataBaseFactory\TeamsChat.DatabaseInterface.csproj" />
     <ProjectReference Include="..\TeamsChat.Data\TeamsChat.SSMSService.csproj" />
     <ProjectReference Include="..\TeamsChat.MongoDbService\TeamsChat.MongoDbService.csproj" />
   </ItemGroup>

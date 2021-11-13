@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.WebApi", "TeamsChat.WebApi\TeamsChat.WebApi.csproj", "{A2F2275A-BF28-4FB3-9CEF-D264D844C344}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5AFC5315-3A48-4570-A55D-C2D4F9F83718} = {5AFC5315-3A48-4570-A55D-C2D4F9F83718}
+		{E2AB936F-2925-4501-A47C-77C87790CCF1} = {E2AB936F-2925-4501-A47C-77C87790CCF1}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.DataObjects", "TeamsChat.DataObjects\TeamsChat.DataObjects.csproj", "{89E49570-0C84-4A79-9608-03C59520A554}"
@@ -15,6 +16,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.MongoDbService", "TeamsChat.MongoDbService\TeamsChat.MongoDbService.csproj", "{5AFC5315-3A48-4570-A55D-C2D4F9F83718}"
 	ProjectSection(ProjectDependencies) = postProject
 		{89E49570-0C84-4A79-9608-03C59520A554} = {89E49570-0C84-4A79-9608-03C59520A554}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamsChat.DatabaseInterface", "TeamsChat.DataBaseFactory\TeamsChat.DatabaseInterface.csproj", "{E2AB936F-2925-4501-A47C-77C87790CCF1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5AFC5315-3A48-4570-A55D-C2D4F9F83718} = {5AFC5315-3A48-4570-A55D-C2D4F9F83718}
+		{711928AF-2253-4F90-9B19-0523AC9A4DA6} = {711928AF-2253-4F90-9B19-0523AC9A4DA6}
 	EndProjectSection
 EndProject
 Global
@@ -39,6 +46,10 @@ Global
 		{5AFC5315-3A48-4570-A55D-C2D4F9F83718}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AFC5315-3A48-4570-A55D-C2D4F9F83718}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AFC5315-3A48-4570-A55D-C2D4F9F83718}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2AB936F-2925-4501-A47C-77C87790CCF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2AB936F-2925-4501-A47C-77C87790CCF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2AB936F-2925-4501-A47C-77C87790CCF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2AB936F-2925-4501-A47C-77C87790CCF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
