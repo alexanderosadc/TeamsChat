@@ -7,7 +7,7 @@ namespace TeamsChat.MongoDbService.Repository
 {
     public interface IMongoDbRepository<TEntity> : IDisposable where TEntity : class
     {
-        Task<IEnumerable<TEntity>> GetAll();
+        IEnumerable<TEntity> GetAll();
         Task<IEnumerable<TEntity>> GetFiltered(Expression<Func<TEntity, bool>> filterExpression);
         void Insert(TEntity entity);
     }

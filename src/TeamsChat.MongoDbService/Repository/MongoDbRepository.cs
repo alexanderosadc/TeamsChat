@@ -25,9 +25,10 @@ namespace TeamsChat.MongoDbService.Repository
             return data.ToList();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAll()
+        public virtual IEnumerable<TEntity> GetAll()
         {
-            var all = await _dbSet.FindAsync(Builders<TEntity>.Filter.Empty);
+            //var all = await _dbSet.FindAsync(Builders<TEntity>.Filter.Empty);
+            var all = _dbSet.Find(Builders<TEntity>.Filter.Empty);
             return all.ToList();
         }
         public virtual void Insert(TEntity entity)
