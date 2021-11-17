@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace TeamsChat.WebApi.Common
 {
     public interface IControllerManager
     {
-        Task<HttpStatusCode> CreateLog(HttpContext http, int response);
+        HttpStatusCode CreateLog(HttpContext http, int response);
     }
 }

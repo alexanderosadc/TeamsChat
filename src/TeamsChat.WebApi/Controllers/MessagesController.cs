@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using TeamsChat.SSMS.UnitOfWork;
-using TeamsChat.DataObjects.SSMSModels;
 using TeamsChat.WebApi.DTO;
-using System;
 using TeamsChat.WebApi.Common;
-using System.Linq;
 using System.Threading.Tasks;
 using TeamsChat.DatabaseInterface;
+using TeamsChat.WebApi.DbCommunicators;
+using TeamsChat.TimeoutService;
+using System.Net;
+using TeamsChat.TimeoutService.Models;
 
 namespace TeamsChat.WebApi.Controllers
 {
@@ -17,78 +16,55 @@ namespace TeamsChat.WebApi.Controllers
     [Route("[controller]")]
     public class MessagesController : BaseController
     {
-        ISSMSUnitOfWork _database;
+        private MessagesCommunicator _messagesCommunicator;
+        private int _timeout = 5;
+
         public MessagesController(IDatabaseFactory databaseFactory, IMapper mapper, IControllerManager controllerManager) : base(databaseFactory, mapper, controllerManager) 
         {
-            _database = databaseFactory.GetDb<ISSMSUnitOfWork>();
+            _messagesCommunicator = new MessagesCommunicator(databaseFactory, mapper, controllerManager);
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MessageDTO>>> GetMessages()
         {
-            var messageDTO = _database.GetRepository<Message>().GetList(
-                selector: message => _mapper.Map<MessageDTO>(message),
-                include: message => message
-                    .Include(message => message.MessageGroup)
-                    .Include(message => message.User));
+            var result = await TimeoutManager.TimeoutValidator(_messagesCommunicator.GetMessages, HttpContext, _timeout);
 
-            if (messageDTO.Count() == 0)
-            {
-                await _controllerManager.CreateLog(HttpContext, 204);
-                return NoContent();
-            }
+            if (result.StatusCode == HttpStatusCode.RequestTimeout)
+                return StatusCode(408);
 
-            await _controllerManager.CreateLog(HttpContext, 200);
-            return Ok(messageDTO);
+            if (result.Output.StatusCode == HttpStatusCode.NoContent)
+                return StatusCode(204);
+
+            return Ok(result.Output.Data);
         }
 
         [HttpGet("groupId={groupId}")]
         public async Task<ActionResult<IEnumerable<MessageDTO>>> GetMessagesByGroupId(int groupId)
         {
-            var messageDTO = _database.GetRepository<Message>().GetList(
-                selector: message => _mapper.Map<MessageDTO>(message),
-                filter: message => message.MessageGroup.ID == groupId,
-                include: message => message
-                    .Include(message => message.MessageGroup)
-                    .Include(message => message.User));
+            TimeoutParameters<int> parameters = new TimeoutParameters<int> { Container = groupId, HttpContext = HttpContext };
+            var result = await TimeoutManager.TimeoutValidator(_messagesCommunicator.GetMessagesByGroupId, parameters, _timeout);
 
-            if (messageDTO.Count() == 0)
-            {
-                await _controllerManager.CreateLog(HttpContext, 204);
-                return NoContent();
-            }
+            if (result.StatusCode == HttpStatusCode.RequestTimeout)
+                return StatusCode(408);
 
-            await _controllerManager.CreateLog(HttpContext, 200);
-            return Ok(messageDTO);
+            if (result.Output.StatusCode == HttpStatusCode.NoContent)
+                return StatusCode(204);
+
+            return Ok(result.Output.Data);
         }
 
         [HttpPost]
         public async Task<ActionResult<MessageDTO>> PostMessage([FromBody] MessageDTO messageDTO)
         {
-            var messageGroupDb = _database.GetRepository<MessageGroup>().SingleOrDefault(
-                filter: group => group.ID == messageDTO.MessageGroup.ID);
+            TimeoutParameters<MessageDTO> parameters = new TimeoutParameters<MessageDTO> { Container = messageDTO, HttpContext = HttpContext };
+            var result = await TimeoutManager.TimeoutValidator(_messagesCommunicator.PostMessage, parameters, _timeout);
 
-            var userDb = _database.GetRepository<User>().SingleOrDefault(
-                filter: user => user.ID == messageDTO.User.ID);
+            if (result.StatusCode == HttpStatusCode.RequestTimeout)
+                return StatusCode(408);
 
-            var messageToDb = new Message
-            {
-                Text = messageDTO.Text,
-                CreatedAt = DateTime.Now,
-                MessageGroup = messageGroupDb,
-                User = userDb
-            };
-
-            _database.GetRepository<Message>().Insert(messageToDb);
-            _database.SaveChanges();
-
-            if (messageToDb.ID == 0)
-            {
-                await _controllerManager.CreateLog(HttpContext, 500);
+            if (result.Output.StatusCode == HttpStatusCode.InternalServerError)
                 return StatusCode(500);
-            }
 
-            await _controllerManager.CreateLog(HttpContext, 201);
             return StatusCode(201);
         }
     }

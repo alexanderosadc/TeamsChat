@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Net;
 using TeamsChat.DatabaseInterface;
 using TeamsChat.MongoDbService.ModelRepositories;
+using TeamsChat.TimeoutService.Models;
 using TeamsChat.WebApi.Common;
 using TeamsChat.WebApi.DTO;
 
@@ -23,12 +22,16 @@ namespace TeamsChat.WebApi.DbCommunicators
             _controllerManager = controllerManager;
         }
 
-        public IEnumerable<LogDTO> GetAllLogs()
+        public TimeoutResult<IEnumerable<LogDTO>> GetAllLogs()
         {
+            var result = new TimeoutResult<IEnumerable<LogDTO>>();
             var logsDb = _logsRepository.GetAll();
 
             if (logsDb.Count() == 0)
-                return new List<LogDTO>();
+            {
+                result.StatusCode = HttpStatusCode.NoContent;
+                return result;
+            }
 
             IList<LogDTO> logs = new List<LogDTO>();
 
@@ -37,7 +40,9 @@ namespace TeamsChat.WebApi.DbCommunicators
                 logs.Add(_mapper.Map<LogDTO>(log));
             }
 
-            return logs;
+            result.Data = logs;
+            result.StatusCode = HttpStatusCode.OK;
+            return result;
         }
     }
 }

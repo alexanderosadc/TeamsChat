@@ -19,9 +19,9 @@ namespace TeamsChat.MongoDbService.Repository
             _dbSet = _context.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetFiltered(Expression<Func<TEntity, bool>> filterExpression)
+        public virtual IEnumerable<TEntity> GetFiltered(Expression<Func<TEntity, bool>> filterExpression)
         {
-            var data = await _dbSet.FindAsync(filterExpression);
+            var data = _dbSet.Find(filterExpression);
             return data.ToList();
         }
 

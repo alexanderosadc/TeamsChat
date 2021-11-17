@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Net;
 using TeamsChat.DataObjects.MongoDbModels;
 using TeamsChat.MongoDbService.ModelRepositories;
 
@@ -16,7 +16,7 @@ namespace TeamsChat.WebApi.Common
         }
 
 
-        public async Task<HttpStatusCode> CreateLog(HttpContext httpContext, int response)
+        public HttpStatusCode CreateLog(HttpContext httpContext, int response)
         {
             var requestUrl = httpContext.Request.GetDisplayUrl();
             var method = httpContext.Request.Method;
@@ -25,7 +25,7 @@ namespace TeamsChat.WebApi.Common
 
             _logsRepository.Insert(logToDb);
 
-            var logDb = await _logsRepository.GetFiltered(
+            var logDb = _logsRepository.GetFiltered(
                 filterExpression: log => log.Id == logToDb.Id);
 
             if (logDb.Count() == 0)
@@ -33,11 +33,5 @@ namespace TeamsChat.WebApi.Common
 
             return HttpStatusCode.OK;
         }
-    }
-
-    public enum HttpStatusCode
-    {
-        NotFound = 404,
-        OK = 200
     }
 }
