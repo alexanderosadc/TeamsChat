@@ -3,9 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using TeamsChat.UnitTests.Common;
 using TeamsChat.WebApi.DTO;
 
@@ -19,9 +16,14 @@ namespace TeamsChat.UnitTests.ControllerTests
         {
             string content = WebClientManager.GetResponse("Messages");
 
-            var message = JsonConvert.DeserializeObject<IEnumerable<MessageDTO>>(content).FirstOrDefault();
+            var messagesCount = JsonConvert.DeserializeObject<IEnumerable<MessageDTO>>(content).Count();
 
-            Assert.AreEqual(message.Text.GetType(), typeof(string));
+            var isResponseFilled = false;
+
+            if(messagesCount > 0)
+                isResponseFilled = true;
+
+            Assert.AreEqual(isResponseFilled, true);
         }
 
         [TestMethod]
@@ -67,7 +69,12 @@ namespace TeamsChat.UnitTests.ControllerTests
 
             var singleMessageReceived = message.Select(message => message.Text = messageToCreate.Text).FirstOrDefault();
 
-            Assert.AreEqual(messageToCreate.Text, singleMessageReceived);
+            var isResponseFilled = false;
+
+            if (singleMessageReceived.Length > 0)
+                isResponseFilled = true;
+
+            Assert.AreEqual(isResponseFilled, true);
         }
     }
 }

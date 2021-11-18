@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using TeamsChat.DatabaseInterface;
@@ -22,6 +25,25 @@ namespace TeamsChat.WebApi.DbCommunicators
             _controllerManager = controllerManager;
         }
 
+        public TimeoutResult<IEnumerable<MessageGroupDTO>> GetGroups(HttpContext httpContext)
+        {
+            var result = new TimeoutResult<IEnumerable<MessageGroupDTO>>();
+
+            var messagesDTO = _database.GetRepository<MessageGroup>().GetList(
+                selector: message => _mapper.Map<MessageGroupDTO>(message));
+
+            if (messagesDTO.Count() == 0)
+            {
+                _controllerManager.CreateLog(httpContext, 204);
+                result.StatusCode = HttpStatusCode.NoContent;
+                return result;
+            }
+
+            _controllerManager.CreateLog(httpContext, 200);
+            result.StatusCode = HttpStatusCode.OK;
+            result.Data = messagesDTO;
+            return result;
+        }
         public TimeoutResult<bool> PostGroup(TimeoutParameters<MessageGroupDTO> messageGroupParams)
         {
             var result = new TimeoutResult<bool>();

@@ -8,6 +8,7 @@ using TeamsChat.WebApi.DbCommunicators;
 using TeamsChat.TimeoutService;
 using TeamsChat.TimeoutService.Models;
 using System.Net;
+using System.Collections.Generic;
 
 namespace TeamsChat.WebApi.Controllers
 {
@@ -20,6 +21,20 @@ namespace TeamsChat.WebApi.Controllers
         public MessageGroupsController(IDatabaseFactory databaseFactory, IMapper mapper, IControllerManager controllerManager) : base(databaseFactory, mapper, controllerManager) 
         {
             _messageGroupsCommunicator = new MessageGroupsCommunicator(databaseFactory, mapper, controllerManager);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<MessageGroupDTO>>> GetGroups()
+        {
+            var result = await TimeoutManager.TimeoutValidator(_messageGroupsCommunicator.GetGroups, HttpContext, _timeout);
+
+            if (result.StatusCode == HttpStatusCode.RequestTimeout)
+                return StatusCode(408);
+
+            if (result.Output.StatusCode == HttpStatusCode.NoContent)
+                return StatusCode(204);
+
+            return Ok(result.Output.Data);
         }
 
         [HttpPost]
