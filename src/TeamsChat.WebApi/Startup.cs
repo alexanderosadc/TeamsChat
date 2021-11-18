@@ -16,6 +16,7 @@ using TeamsChat.MongoDbService.Context;
 using TeamsChat.MongoDbService.UnitOfWork;
 using TeamsChat.WebApi.Common;
 using TeamsChat.DatabaseInterface;
+using AspNetCoreRateLimit;
 
 namespace TeamsChat.WebApi
 {
@@ -36,6 +37,8 @@ namespace TeamsChat.WebApi
 
             services.AddScoped<IControllerManager, ControllerManager>();
             services.AddScoped<IDatabaseFactory, DatabaseFactory>();
+
+            ConcurrentLimit(services);
 
             services.AddAutoMapper(
                 typeof(AttachedFilesProfile),
@@ -79,6 +82,8 @@ namespace TeamsChat.WebApi
                 Console.WriteLine("Error: " + ex);
             }
 
+            app.UseIpRateLimiting();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -105,6 +110,19 @@ namespace TeamsChat.WebApi
             services.AddScoped<SSMSIDbInitializer, SSMSDbInitializer>();
             services.AddScoped(typeof(ISSMSRepository<>), typeof(SSMSRepository<>));
             services.AddScoped(typeof(ISSMSUnitOfWork), typeof(SSMSUnitOfWork));
+        }
+
+        private void ConcurrentLimit(IServiceCollection services)
+        {
+            services.AddOptions();
+
+            services.AddMemoryCache();
+
+            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+
+            services.AddInMemoryRateLimiting();
+
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
         }
     }
 }
