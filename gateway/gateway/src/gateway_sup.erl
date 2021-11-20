@@ -34,15 +34,15 @@ init([]) ->
         period => MaxTime
     },
 
-    % Server = #{
-    %     id => server,
-    %     start => {server, start_link, []},
-    %     restart => permanent, 
-    %     shutdown => 2000, 
-    %     type => worker,
-    %     modules => [server]
-    % },
-    ChildSpecs = [],
+    LoadBalancer = #{
+        id => load_balancer,
+        start => {load_balancer, start_link, []},
+        restart => permanent, 
+        shutdown => 2000, 
+        type => worker,
+        modules => [load_balancer]
+    },
+    ChildSpecs = [LoadBalancer],
     {ok, {SupFlags, ChildSpecs}}.
 
 %% internal functions

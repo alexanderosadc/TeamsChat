@@ -13,7 +13,8 @@ start(_StartType, _StartArgs) ->
     Routes = [{
         '_',
         [
-            {"/[:name]", server, []}
+            % {"/[:name]", server, []},
+            {"/get_all_chats", server, [get_all_chats]}
         ]
     }],
     Dispatch = cowboy_router:compile(Routes),
