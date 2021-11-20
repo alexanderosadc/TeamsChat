@@ -5,8 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCoreRateLimit" Version="4.0.1" />
+    <PackageReference Include="AspNetCoreRateLimit.Redis" Version="1.0.0" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -15,7 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TeamsChat.Data\TeamsChat.Data.csproj" />
+    <ProjectReference Include="..\TeamsChat.DataBaseFactory\TeamsChat.DatabaseInterface.csproj" />
+    <ProjectReference Include="..\TeamsChat.Data\TeamsChat.SSMSService.csproj" />
+    <ProjectReference Include="..\TeamsChat.MongoDbService\TeamsChat.MongoDbService.csproj" />
+    <ProjectReference Include="..\TeamsChat.TimeoutService\TeamsChat.TimeoutService.csproj" />
   </ItemGroup>
 
 </Project>

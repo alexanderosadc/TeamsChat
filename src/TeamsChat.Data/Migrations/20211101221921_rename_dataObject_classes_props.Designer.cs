@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TeamsChat.Data;
+using TeamsChat.SSMS;
 
-namespace TeamsChat.Data.Migrations
+namespace TeamsChat.SSMS.Migrations
 {
-    [DbContext(typeof(TeamsChatContext))]
+    [DbContext(typeof(SSMSContext))]
     [Migration("20211101221921_rename_dataObject_classes_props")]
     partial class rename_dataObject_classes_props
     {

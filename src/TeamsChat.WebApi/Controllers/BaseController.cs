@@ -1,18 +1,21 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TeamsChat.Data.UnitOfWork;
+using TeamsChat.DatabaseInterface;
+using TeamsChat.WebApi.Common;
 
 namespace TeamsChat.WebApi.Controllers
 {
     public class BaseController : ControllerBase
     {
-        protected readonly IUnitOfWork _database;
+        protected readonly IDatabaseFactory _databaseFactory;
         protected readonly IMapper _mapper;
+        protected readonly IControllerManager _controllerManager;
 
-        public BaseController(IUnitOfWork database, IMapper mapper)
+        public BaseController(IDatabaseFactory databaseFactory, IMapper mapper, IControllerManager controllerManager)
         {
-            _database = database;
+            _databaseFactory = databaseFactory;
             _mapper = mapper;
+            _controllerManager = controllerManager;
         }
     }
 }

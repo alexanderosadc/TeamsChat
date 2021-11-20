@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TeamsChat.Data;
+using TeamsChat.SSMS;
 
-namespace TeamsChat.Data.Migrations
+namespace TeamsChat.SSMS.Migrations
 {
-    [DbContext(typeof(TeamsChatContext))]
+    [DbContext(typeof(SSMSContext))]
     partial class TeamsChatContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -6,11 +6,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
-using TeamsChat.Data;
-using TeamsChat.Data.DbInitializer;
-using TeamsChat.Data.Repository;
-using TeamsChat.Data.UnitOfWork;
+using TeamsChat.SSMS;
+using TeamsChat.SSMS.DbInitializer;
+using TeamsChat.SSMS.Repository;
+using TeamsChat.SSMS.UnitOfWork;
 using TeamsChat.WebApi.Mapper;
+using TeamsChat.MongoDbService.ModelRepositories;
+using TeamsChat.MongoDbService.Context;
+using TeamsChat.MongoDbService.UnitOfWork;
+using TeamsChat.WebApi.Common;
+using TeamsChat.DatabaseInterface;
+using AspNetCoreRateLimit;
 
 namespace TeamsChat.WebApi
 {
@@ -25,22 +31,27 @@ namespace TeamsChat.WebApi
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<TeamsChatContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+        {            
+            SSMSService(services);
+            MongoDbServices(services);
 
-            services.AddScoped<IDbInitializer, DbInitializer>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+            services.AddScoped<IControllerManager, ControllerManager>();
+            services.AddScoped<IDatabaseFactory, DatabaseFactory>();
+
+            ConcurrentLimit(services);
 
             services.AddAutoMapper(
                 typeof(AttachedFilesProfile),
                 typeof(MessageGroupsProfile),
                 typeof(MessagesProfile),
-                typeof(UsersProfile)
+                typeof(UsersProfile),
+                typeof(LogsProfile)
                 );
 
-            services.AddControllers();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        );
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TeamsChat.WebApi", Version = "v1" });
@@ -62,7 +73,7 @@ namespace TeamsChat.WebApi
                 var scopedFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
                 using (var scope = scopedFactory.CreateScope())
                 {
-                    var dbInitializer = scope.ServiceProvider.GetService<IDbInitializer>();
+                    var dbInitializer = scope.ServiceProvider.GetService<SSMSIDbInitializer>();
                     dbInitializer.Initialize();
                 }
             }
@@ -70,6 +81,8 @@ namespace TeamsChat.WebApi
             {
                 Console.WriteLine("Error: " + ex);
             }
+
+            app.UseIpRateLimiting();
 
             app.UseHttpsRedirection();
 
@@ -81,6 +94,35 @@ namespace TeamsChat.WebApi
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void MongoDbServices(IServiceCollection services)
+        {
+            services.AddScoped<IMongoDbContext, MongoDbContext>();
+            services.AddScoped<IMongoDbUnitOfWork, MongoDbUnitOfWork>();
+            services.AddScoped<ILogsRepository, LogsRepository>();
+        }
+        private void SSMSService(IServiceCollection services)
+        {
+            services.AddDbContext<SSMSContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<SSMSIDbInitializer, SSMSDbInitializer>();
+            services.AddScoped(typeof(ISSMSRepository<>), typeof(SSMSRepository<>));
+            services.AddScoped(typeof(ISSMSUnitOfWork), typeof(SSMSUnitOfWork));
+        }
+
+        private void ConcurrentLimit(IServiceCollection services)
+        {
+            services.AddOptions();
+
+            services.AddMemoryCache();
+
+            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+
+            services.AddInMemoryRateLimiting();
+
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
         }
     }
 }
