@@ -38,7 +38,7 @@ to_json(Req, HandlerName) ->
 		httpc:request(get, {"http://www.erlang.org", []}, [], []),
 	inets:stop(),
 	io:format("~p", ["HAHAHAHAHAHAHAHHAHAHAHHAH"]),
-	{Bodys, Req, HandlerName}.
+	{Body, Req, HandlerName}.
 
 to_text(Req, State) ->
 	{<<"REST Hello World as text!">>, Req, State}.
