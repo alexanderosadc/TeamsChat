@@ -1,4 +1,4 @@
--module(server).
+-module(server_get_all_joined_chats).
 
 -export([init/2, content_types_provided/2, to_html/2, to_json/2, to_text/2]).
 
@@ -31,8 +31,8 @@ to_html(Req, State) ->
 	{Body, Req, State}.
 
 to_json(Req, HandlerName) ->
-	load_balancer:call_worker(Req, HandlerName),
-	Body = <<"{\"rest\": \"Hello World!\"}">>,
+	% load_balancer:call_worker(Req, HandlerName),
+	Body = <<"{\"rest\": \"get_all_joined_chats\"}">>,
 	{Body, Req, HandlerName}.
 
 to_text(Req, State) ->

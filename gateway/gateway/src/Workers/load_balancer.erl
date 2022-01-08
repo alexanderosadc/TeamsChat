@@ -9,6 +9,7 @@ start_link() ->
 
 init([]) ->
     GetAllChatsList = [],
+    % io:format("~p", ["Load Balancer Starts "]),
     {ok, [GetAllChatsList]}.
 
 handle_call([Req, HandlerName], _From, State) ->
