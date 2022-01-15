@@ -33,6 +33,11 @@ to_html(Req, State) ->
 to_json(Req, HandlerName) ->
 	% load_balancer:call_worker(Req, HandlerName),
 	Body = <<"{\"rest\": \"get_all_joined_chats\"}">>,
+	inets:start(),
+	{ok, {{Version, 200, ReasonPhrase}, Headers, Bodys}} = 
+		httpc:request(get, {"http://www.erlang.org", []}, [], []),
+	inets:stop(),
+	io:format("~p", ["HAHAHAHAHAHAHAHHAHAHAHHAH"]),
 	{Body, Req, HandlerName}.
 
 to_text(Req, State) ->

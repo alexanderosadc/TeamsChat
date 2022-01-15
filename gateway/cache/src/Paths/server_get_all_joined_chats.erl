@@ -1,4 +1,4 @@
--module(server_post_create_chat).
+-module(server_get_all_joined_chats).
 
 -export([init/2, content_types_provided/2, to_html/2, to_json/2, to_text/2]).
 
@@ -32,12 +32,8 @@ to_html(Req, State) ->
 
 to_json(Req, HandlerName) ->
 	% load_balancer:call_worker(Req, HandlerName),
-	Body = <<"{\"rest\": \"create_chat\"}">>,
-	inets:start(),
-	{ok, {{Version, 200, ReasonPhrase}, Headers, Bodys}} = 
-		httpc:request(get, {"http://www.erlang.org", []}, [], []),
-	inets:stop(),
-	io:format("~p", ["HAHAHAHAHAHAHAHHAHAHAHHAH"]),
+	database:send_message({Req, HandlerName}),
+	Body = <<"OK">>,
 	{Body, Req, HandlerName}.
 
 to_text(Req, State) ->
