@@ -1,15 +1,42 @@
 version: "3.9"
 
 services:
-  client1:
-    container_name: client-1
-    build:
-      context: ./gateway/gateway
-      dockerfile: Dockerfile
-    volumes:
-      - ./gateway/gateway:/gateway/gateway
-    working_dir: /gateway/gateway
-    tty: true
-    command: rebar3 shell
-    ports:
-      - "8080:8080"
+  # client1:
+  #   container_name: client-1
+  #   build:
+  #     context: ./gateway/gateway
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./gateway/gateway:/gateway/gateway
+  #   working_dir: /gateway/gateway
+  #   tty: true
+  #   command: rebar3 shell
+  #   ports:
+  #     - "8080:8080"
+
+    web:
+      build: "src/."
+      ports: 
+        - "5000:5000"
+      depends_on: 
+        - "sqldata"
+
+    sqldata:
+      container_name: sqldata
+      image: mcr.microsoft.com/mssql/server:2019-latest
+      environment:
+        - SA_PASSWORD=Ameno1234
+        - ACCEPT_EULA=Y
+      ports:
+        - "5434:1433"
+
+    mongo:
+      image: mongo
+      container_name: mongo
+      environment:
+          - MONGO_INITDB_ROOT_USERNAME=root
+          - MONGO_INITDB_ROOT_PASSWORD=Ameno1234
+      command: mongod --quiet --logpath /dev/null
+      ports: 
+        - "27017:27017"
+      # mongodb://root:Ameno1234@mongo:27017
