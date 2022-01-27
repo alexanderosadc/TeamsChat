@@ -37,7 +37,6 @@ to_json(Req, HandlerName) ->
 	{ok, {{Version, 200, ReasonPhrase}, Headers, Bodys}} = 
 		httpc:request(get, {"http://www.erlang.org", []}, [], []),
 	inets:stop(),
-	io:format("~p", ["HAHAHAHAHAHAHAHHAHAHAHHAH"]),
 	{Body, Req, HandlerName}.
 
 to_text(Req, State) ->

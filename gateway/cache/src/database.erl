@@ -1,41 +1,43 @@
 -module(database).
 
 -behaviour(gen_server).
--export([send_message/1, start_link/0, init/1 ,handle_cast/2]).
+-export([send_message/1, start_link/0, init/1 ,handle_cast/2, handle_info/2, get_data/1]).
 
 start_link() ->
     gen_server:start_link({local, database}, ?MODULE, [], []).
 
 init([]) ->
-    ets:new(json, [set, named_table]),
-    {ok, []}.
+    Index = 1,
+    ets:new(cache_db, [set, named_table]),
+    {ok, Index}.
 
 send_message(Message) ->
     gen_server:cast(?MODULE, {send_message, Message}).
 
-
-handle_cast({send_message, Message}, State) ->
-     % io:format("~p~p ~n", ["Database =", ListOfMaps]),
-    add_to_database(Message),
-    Infomration = ets:info(json),
-    Size = lists:keyfind(size, 1, Infomration),
-    io:format("~p~p ~n", ["Size Json", ets:last(json)]),
+handle_info({_, _, IndexToSearch}, State) ->
+    ets:match_delete(cache_db, {'_', '_', IndexToSearch}),
     {noreply, State}.
 
+handle_cast({send_message, Message}, Index) ->
+    io:format("~p~p ~n", ["Size Json", Index]),
+    add_to_database(Message, Index),
+    NewIndex = Index + 1,
+    % io:format("~p~p ~n", ["Size Json", ets:last(json)]),
+    {noreply, NewIndex}.
 
-add_to_database({Json, Root}) ->
-    ObjectToSave = {Json, Root},
-    % erlang:start_timer(5000, ),
-    io:format("~p~p ~n", ["Tuple =", ObjectToSave]),
-    % io:format("~p~p ~n", ["Database =", TweetMap]),
 
-    ets:insert(json, ObjectToSave).
+add_to_database({Json, Root}, Index) ->
+    ObjectToSave = {Json, Root, Index},
+    ets:insert(cache_db, ObjectToSave),
+    erlang:start_timer(10000, database, Index).
 
-update_time(Length) when Length > 0 ->
-    Item = ets:first(json),
-    {_, _, Timeout} = Item,
-    ets:delete(json, 1),
-    ets:insert();
-update_time(_)->
-    ok.
-    
+get_data(Root) ->
+    MatchedValues = ets:match(cache_db, {'_', Root, '_'}),
+    Response = return_data(MatchedValues),
+    io:format("~p~p ~n", ["Matched JSON", Response]),
+    Response.
+
+return_data(ExtractedData) when length(ExtractedData) > 0 ->
+    ExtractedData;
+return_data(ExtractedData) ->
+    0.

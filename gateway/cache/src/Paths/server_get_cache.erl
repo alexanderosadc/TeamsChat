@@ -1,4 +1,4 @@
--module(server_get_members_of_chat).
+-module(server_get_cache).
 
 -export([init/2, content_types_provided/2, to_html/2, to_json/2, to_text/2]).
 
@@ -31,12 +31,9 @@ to_html(Req, State) ->
 	{Body, Req, State}.
 
 to_json(Req, HandlerName) ->
-	% load_balancer:call_worker(Req, HandlerName),
-	Body = <<"{\"rest\": \"get_members_of_chat\"}">>,
-	inets:start(),
-	{ok, {{Version, 200, ReasonPhrase}, Headers, Bodys}} = 
-		httpc:request(get, {"http://www.erlang.org", []}, [], []),
-	inets:stop(),
+	io:format("Ia zashel:~p~n", [HandlerName]),
+	% Response = database:get_data(HandlerName),
+	Body = <<"Blahblahbbash">>,
 	{Body, Req, HandlerName}.
 
 to_text(Req, State) ->

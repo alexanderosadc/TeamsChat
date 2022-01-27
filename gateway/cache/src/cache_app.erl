@@ -18,7 +18,8 @@ start(_StartType, _StartArgs) ->
             {"/server_get_all_joined_chats", server_get_all_joined_chats, [server_get_all_joined_chats]},
             {"/server_get_all_messages", server_get_all_messages, [server_get_all_messages]},
             {"/server_get_members_of_chat", server_get_members_of_chat, [server_get_members_of_chat]},
-            {"/server_post_create_chat", server_post_create_chat, [server_post_create_chat]}
+            {"/server_post_create_chat", server_post_create_chat, [server_post_create_chat]},
+            {"/server_get_cache", server_get_cache, [server_get_cache]}    
         ]
     }],
     Dispatch = cowboy_router:compile(Routes),
