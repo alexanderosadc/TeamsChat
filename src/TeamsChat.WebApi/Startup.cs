@@ -107,6 +107,7 @@ namespace TeamsChat.WebApi
             services.AddDbContext<SSMSContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
             services.AddScoped<SSMSIDbInitializer, SSMSDbInitializer>();
             services.AddScoped(typeof(ISSMSRepository<>), typeof(SSMSRepository<>));
             services.AddScoped(typeof(ISSMSUnitOfWork), typeof(SSMSUnitOfWork));
